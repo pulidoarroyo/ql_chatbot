@@ -13,7 +13,7 @@ STATES = {
 ACTIONS = {
     "A0": "¡Hola! ¿En qué te puedo ayudar hoy?",
     "A1": "El precio de nuestro servicio es de 20 dólares al mes.",
-    "A2": "¡Hasta luego! Fue un placer atenderte. 😊",
+    "A2": "¡Hasta luego! Fue un placer atenderte.",
     "A3": "Atendemos de Lunes a Viernes de 8am a 6pm.",
     "A4": "Estamos ubicados en la Av. Principal, edificio Tech, piso 3.",
     "A5": "Para soporte técnico, puedes escribirnos a soporte@empresa.com.",

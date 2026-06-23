@@ -1,92 +1,92 @@
-# ql_chatbot - Chatbot Interactivo con Aprendizaje por Refuerzo Q-Learning
+# ql_chatbot - Interactive Chatbot with Q-Learning Reinforcement Learning
 
-Este proyecto es un chatbot interactivo de escritorio desarrollado en Python utilizando la biblioteca gráfica **Tkinter**. El bot utiliza el algoritmo de aprendizaje por refuerzo **Q-Learning** (simplificado como un *Contextual Bandit* con factor de descuento $\gamma = 0$) para aprender de forma dinámica a responder de manera óptima según la intención del usuario y la retroalimentación en tiempo real (Likes/Dislikes).
+This project is an interactive desktop chatbot developed in Python using the **Tkinter** graphical library. The bot uses the **Q-Learning** reinforcement learning algorithm (simplified as a *Contextual Bandit* with a discount factor $\gamma = 0$) to dynamically learn to respond optimally based on the user's intent and real-time feedback (Likes/Dislikes).
 
-## 🚀 Características
+## 🚀 Features
 
-- **Clasificación de Intenciones por Palabras Clave**: Detecta intenciones como saludos, preguntas sobre precios, horarios, ubicación, soporte técnico y despedidas.
-- **Toma de Decisiones Epsilon-Greedy**: Alterna de forma balanceada entre la exploración (acciones aleatorias para descubrir nuevas respuestas) y la explotación (seleccionar la mejor respuesta aprendida).
-- **Retroalimentación Interactiva**: El usuario puede calificar las respuestas del bot (+1 / -1) para actualizar la tabla de valores Q.
-- **Visualización en Tiempo Real**:
-  - Muestra la tabla de valores Q actualizada.
-  - Visualización paso a paso de la fórmula matemática aplicada en cada actualización.
-  - Historial de chat codificado por colores.
-- **Persistencia**: La tabla Q se guarda de manera automática en un archivo `q_table.json`.
+- **Keyword-based Intent Classification**: Detects intents such as greetings, inquiries about prices, hours, location, technical support, and farewells.
+- **Epsilon-Greedy Decision Making**: Balanced alternation between exploration (random actions to discover new responses) and exploitation (selecting the best learned response).
+- **Interactive Feedback**: The user can rate the bot's responses (+1 / -1) to update the Q-values table.
+- **Real-Time Visualization**:
+  - Displays the updated Q-value table.
+  - Step-by-step visualization of the mathematical formula applied in each update.
+  - Color-coded chat history.
+- **Persistence**: The Q-table is automatically saved in a `q_table.json` file.
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
-El proyecto se organiza de la siguiente manera:
+The project is organized as follows:
 
 ```text
 ql_chatbot/
 │
-├── main.py          # Punto de entrada de la aplicación. Inicializa el agente y lanza la interfaz Tkinter.
-├── agent.py         # Clase QLearningAgent. Implementa la lógica del agente, selección de acciones y actualización de valores Q.
-├── data.py          # Definición de los Estados (Intenciones), Acciones (Respuestas) y Palabras Clave para concordancia.
-├── gui.py           # Clase ChatbotGUI. Interfaz gráfica interactiva y visualizaciones del agente en Tkinter.
-├── q_table.json     # Archivo JSON persistente donde se guardan los valores de la tabla Q entrenados.
-└── README.md        # Documentación de estructura y requisitos del proyecto.
+├── main.py          # Application entry point. Initializes the agent and launches the Tkinter interface.
+├── agent.py         # QLearningAgent class. Implements agent logic, action selection, and Q-value updates.
+├── data.py          # Definition of States (Intents), Actions (Responses), and Keywords for matching.
+├── gui.py           # ChatbotGUI class. Interactive graphical interface and agent visualizations in Tkinter.
+├── q_table.json     # Persistent JSON file where trained Q-table values are saved.
+└── README.md        # Project structure and requirements documentation.
 ```
 
 ---
 
-## 🛠️ Requisitos del Proyecto
+## 🛠️ Project Requirements
 
-### Requisitos del Sistema
-- **Python 3.x** instalado en el sistema.
+### System Requirements
+- **Python 3.x** installed on the system.
 
-### Dependencias
-El proyecto utiliza bibliotecas nativas de Python, por lo que **no requiere instalar dependencias de terceros** (`pip install`).
-- `tkinter` (incluido por defecto en la mayoría de las distribuciones de Python).
-- `random` (estándar de Python).
-- `json` (estándar de Python).
-- `os` (estándar de Python).
+### Dependencies
+The project uses native Python libraries, so it **does not require installing third-party dependencies** (`pip install`).
+- `tkinter` (included by default in most Python distributions).
+- `random` (Python standard library).
+- `json` (Python standard library).
+- `os` (Python standard library).
 
-*Nota para sistemas Linux:* Si ejecutas la aplicación en Linux y tienes problemas al abrir la interfaz gráfica, asegúrate de instalar Tkinter ejecutando:
+*Note for Linux systems:* If you run the application on Linux and have issues opening the graphical interface, make sure to install Tkinter by running:
 ```bash
 sudo apt-get install python3-tk
 ```
 
 ---
 
-## ⚙️ Cómo Ejecutar el Proyecto
+## ⚙️ How to Run the Project
 
-1. Clona o descarga el repositorio en tu máquina local.
-2. Abre una terminal en el directorio raíz del proyecto: `ql_chatbot`.
-3. Ejecuta el siguiente comando para iniciar el chatbot:
+1. Clone or download the repository to your local machine.
+2. Open a terminal in the project's root directory: `ql_chatbot`.
+3. Run the following command to start the chatbot:
    ```bash
    python main.py
    ```
 
 ---
 
-## 🧠 ¿Cómo Funciona la Inteligencia Artificial?
+## 🧠 How Does the Artificial Intelligence Work?
 
-El agente de IA modela el problema como un **Contextual Bandit** (un caso especial de Q-Learning donde el estado futuro no depende de la acción actual, por ende, el factor de descuento $\gamma = 0$):
+The AI agent models the problem as a **Contextual Bandit** (a special case of Q-Learning where the future state does not depend on the current action, hence, the discount factor $\gamma = 0$):
 
-### 1. Estados e Intenciones
-El bot clasifica el texto ingresado por el usuario en uno de los siguientes estados (intenciones definidas en `data.py`):
-- `S0`: Saludo
-- `S1`: Precio
-- `S2`: Despedida
-- `S3`: Horario
-- `S4`: Ubicación
-- `S5`: Soporte
-- `S6`: Desconocido
+### 1. States and Intents
+The bot classifies the text entered by the user into one of the following states (intents defined in `data.py`):
+- `S0`: Greeting (Saludo)
+- `S1`: Price (Precio)
+- `S2`: Farewell (Despedida)
+- `S3`: Hours (Horario)
+- `S4`: Location (Ubicación)
+- `S5`: Support (Soporte)
+- `S6`: Unknown (Desconocido)
 
-### 2. Toma de Decisiones (Política $\epsilon$-greedy)
-Para decidir qué responder, el agente:
-- Con probabilidad **$\epsilon$ (Epsilon = 0.3)**: Elige una acción (respuesta) de forma completamente aleatoria para **explorar** nuevas opciones.
-- Con probabilidad **$1 - \epsilon$**: Elige la respuesta que tiene el mayor valor Q para el estado actual para **explotar** el conocimiento adquirido.
+### 2. Decision Making ($\epsilon$-greedy Policy)
+To decide how to respond, the agent:
+- With probability **$\epsilon$ (Epsilon = 0.3)**: Chooses an action (response) completely at random to **explore** new options.
+- With probability **$1 - \epsilon$**: Chooses the response that has the highest Q-value for the current state to **exploit** acquired knowledge.
 
-### 3. Actualización Matemática del Valor Q
-Cuando el usuario presiona **Like (+1)** o **Dislike (-1)**, el valor Q de la combinación Estado/Acción seleccionada se actualiza usando la siguiente fórmula de aprendizaje por diferencia temporal:
+### 3. Mathematical Update of the Q-value
+When the user presses **Like (+1)** or **Dislike (-1)**, the Q-value of the selected State/Action combination is updated using the following temporal difference learning formula:
 
 $$Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \cdot [R_t - Q(S_t, A_t)]$$
 
-Donde:
-- $Q(S_t, A_t)$ es el valor actual en la tabla para ese estado e intención.
-- $\alpha$ (Tasa de aprendizaje = 0.5) determina qué tanto influye la nueva retroalimentación sobre el conocimiento previo.
-- $R_t$ es la recompensa recibida ($+1.0$ o $-1.0$).
+Where:
+- $Q(S_t, A_t)$ is the current value in the table for that state and intent.
+- $\alpha$ (Learning rate = 0.5) determines how much the new feedback influences the previous knowledge.
+- $R_t$ is the reward received ($+1.0$ or $-1.0$).

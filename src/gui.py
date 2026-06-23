@@ -1,7 +1,7 @@
 # gui.py
 import tkinter as tk
 from tkinter import ttk, messagebox
-from data import STATES, ACTIONS
+from src.data import STATES, ACTIONS
 
 class ChatbotGUI:
     def __init__(self, root, agent):

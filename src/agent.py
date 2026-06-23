@@ -2,7 +2,7 @@
 import random
 import json
 import os
-from data import STATES, ACTIONS, KEYWORDS
+from src.data import STATES, ACTIONS, KEYWORDS
 
 Q_TABLE_FILE = "q_table.json"
 

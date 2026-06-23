@@ -23,11 +23,14 @@ The project is organized as follows:
 ql_chatbot/
 │
 ├── main.py          # Application entry point. Initializes the agent and launches the Tkinter interface.
-├── agent.py         # QLearningAgent class. Implements agent logic, action selection, and Q-value updates.
-├── data.py          # Definition of States (Intents), Actions (Responses), and Keywords for matching.
-├── gui.py           # ChatbotGUI class. Interactive graphical interface and agent visualizations in Tkinter.
 ├── q_table.json     # Persistent JSON file where trained Q-table values are saved.
-└── README.md        # Project structure and requirements documentation.
+├── README.md        # Project structure and requirements documentation.
+├── .gitignore       # Git ignore file.
+└── src/             # Source files directory.
+    ├── __init__.py  # Marks the src directory as a Python package.
+    ├── agent.py     # QLearningAgent class. Implements agent logic, action selection, and Q-value updates.
+    ├── data.py      # Definition of States (Intents), Actions (Responses), and Keywords for matching.
+    └── gui.py       # ChatbotGUI class. Interactive graphical interface and agent visualizations in Tkinter.
 ```
 
 ---

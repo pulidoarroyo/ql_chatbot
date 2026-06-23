@@ -1,65 +1,59 @@
 # agent.py
 import random
+import json
+import os
 from data import STATES, ACTIONS, KEYWORDS
+
+Q_TABLE_FILE = "q_table.json"
 
 class QLearningAgent:
     def __init__(self, alpha=0.5, epsilon=0.3):
-        self.alpha = alpha      # Tasa de aprendizaje (learning rate)
-        self.epsilon = epsilon  # Tasa de exploración (exploration rate)
-        
-        # Inicializar Tabla Q: { 'S0': {'A0': 0.0, 'A1': 0.0...}, 'S1': {...} }
+        self.alpha = alpha
+        self.epsilon = epsilon
         self.q_table = {s: {a: 0.0 for a in ACTIONS} for s in STATES}
+        self.load_q_table()
 
     def get_intent(self, user_input):
-        """
-        Clasifica el texto del usuario buscando palabras clave.
-        Si no encuentra coincidencia, cae en S3 (Desconocido).
-        """
         text = user_input.lower()
-        
         for state, words in KEYWORDS.items():
             for word in words:
                 if word in text:
                     return state
-        return "S3"
+        return "S6"
 
     def choose_action(self, state):
-        """
-        Selecciona una acción usando la política Epsilon-Greedy.
-        - Con probabilidad epsilon: Explora (acción al azar).
-        - Con probabilidad 1-epsilon: Explota (mejor acción actual).
-        Retorna: (ID_acción, es_exploración)
-        """
-        # Mecanismo de Exploración
         if random.random() < self.epsilon:
             action = random.choice(list(ACTIONS.keys()))
             return action, True
-        
-        # Mecanismo de Explotación (Buscar el valor máximo en la fila del estado)
         state_actions = self.q_table[state]
         max_val = max(state_actions.values())
-        
-        # Si hay empate en los valores Q, elegimos uno al azar entre los mejores
-        best_actions = [a for a, val in state_actions.items() if val == max_val]
-        action = random.choice(best_actions)
-        
-        return action, False
+        best_actions = [a for a, v in state_actions.items() if v == max_val]
+        return random.choice(best_actions), False
 
     def update_q_value(self, state, action, reward):
-        """
-        Aplica la ecuación del Contextual Bandit:
-        Q(S, A) = Q(S, A) + alpha * [R - Q(S, A)]
-        Returns:
-            q_old: El valor que tenía antes de la actualización.
-            q_new: El nuevo valor calculado.
-        """
         q_old = self.q_table[state][action]
-        
-        # Aplicación directa de la fórmula simplificada
         q_new = q_old + self.alpha * (reward - q_old)
-        
-        # Guardar en la tabla Q
-        self.q_table[state][action] = round(q_new, 2) # Redondeamos a 2 decimales para la GUI
-        
-        return q_old, self.q_table[state][action]
+        self.q_table[state][action] = round(q_new, 4)
+        self.save_q_table()
+        return round(q_old, 4), round(q_new, 4)
 
+    def save_q_table(self):
+        with open(Q_TABLE_FILE, "w", encoding="utf-8") as f:
+            json.dump(self.q_table, f, ensure_ascii=False, indent=2)
+
+    def load_q_table(self):
+        if os.path.exists(Q_TABLE_FILE):
+            try:
+                with open(Q_TABLE_FILE, "r", encoding="utf-8") as f:
+                    saved = json.load(f)
+                for s in self.q_table:
+                    if s in saved:
+                        for a in self.q_table[s]:
+                            if a in saved[s]:
+                                self.q_table[s][a] = saved[s][a]
+            except Exception:
+                pass
+
+    def reset_q_table(self):
+        self.q_table = {s: {a: 0.0 for a in ACTIONS} for s in STATES}
+        self.save_q_table()
